@@ -1,0 +1,4 @@
+*.jam
+output/
+target/
+.DS_Store

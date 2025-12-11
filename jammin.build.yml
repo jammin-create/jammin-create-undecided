@@ -1,0 +1,12 @@
+services:
+  - path: services/example-jade
+    name: jade
+    sdk: jade
+
+  - path: services/example-jambrains
+    name: jambrains
+    sdk: jambrains
+
+  - path: services/example-jamsdk
+    name: jamsdk
+    sdk: jamsdk

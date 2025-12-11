@@ -1,0 +1,20 @@
+[package]
+name = "empty"
+version = "0.0.15-pre.1"
+edition = "2024"
+authors = ["SpaceJam <hello@spacejam.xyz>"]
+license = "MIT"
+homepage = "https://spacejam.app"
+repository = "https://github.com/spacejamapp/service-template"
+
+[dependencies]
+jade = { version = "0.0.15-pre.1", features = ["logging"] }
+serde = { version = "1.0.215", features = ["derive"], default-features = false }
+
+[build-dependencies]
+jade = "0.0.15-pre.1"
+
+[features]
+default = []
+tiny = ["jade/tiny"]
+std = ["jade/std"]

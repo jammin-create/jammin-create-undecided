@@ -1,0 +1,63 @@
+set dotenv-load := true
+set dotenv-path := "../.env"
+
+# Set CC flags
+export CC_FLAGS := "-Wl,--error-limit=0 -flto -Os -std=gnu23 -I/opt/sdk"
+export POLKATOOL_FLAGS := "--min-stack-size 131072 --dispatch-table '_jb_entry_refine,_jb_entry_accumulate'"
+export IMAGE := "ggwpez/service-builder"
+
+default:
+	@echo "Build an example with 'just build [<name>]' or all examples with 'just build'"
+	@echo "Available examples:"
+	@ls *.c | perl -ne 's/\.c$//; print'
+
+# Build a specific example by name (without .c extension)
+build *name: output
+	#!/usr/bin/env bash
+	set -e
+
+	# If name is empty, then we build all examples
+	if [ -z "{{name}}" ]; then
+		# All files that do not start with 'bare*'
+		FILES=$(ls *.c | grep -v '^bare-')
+		for n in $FILES; do
+			name=$(basename $n .c)
+			just build $name
+		done
+	else
+		for n in {{name}}; do
+			just compile output/${n}.elf ${n}.c
+			just link output/${n}.jam output/${n}.elf
+		done
+	fi
+
+output:
+	@mkdir -p output
+
+compile out_file *in_files:
+	#!/usr/bin/env bash
+	set -e
+
+	# List all files in /opt/sdk except entry_authorizer.c
+	FILES=$(ls ../jambrains-sdk/sdk/*.c | grep -v entry_authorizer.c)
+	# Replace their relative path with an absolute path of /opt/sdk
+	FILES=$(echo $FILES | sed 's|../jambrains-sdk/sdk/|/opt/sdk/|g')
+
+	docker run --rm -v{{justfile_directory()}}:/app -v{{justfile_directory()}}/../jambrains-sdk/sdk:/opt/sdk {{IMAGE}} polkavm-cc \
+		{{CC_FLAGS}} \
+		{{in_files}} \
+		$FILES \
+		-o {{out_file}}
+
+link out_file *in_files:
+	@docker run --rm -v{{justfile_directory()}}:/app -v{{justfile_directory()}}/../jambrains-sdk/sdk:/opt/sdk {{IMAGE}} polkatool link \
+		{{POLKATOOL_FLAGS}} \
+		{{in_files}} \
+		-o {{out_file}}
+	@echo "Linked {{out_file}}"
+
+clean:
+	rm -rf output/
+
+watch:
+	find . ../jambrains-sdk/sdk | entr -c "just"
