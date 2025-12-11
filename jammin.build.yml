@@ -9,4 +9,4 @@ services:
 
   - path: services/example-jamsdk
     name: jamsdk
-    sdk: jamsdk
+    sdk: jam-sdk
