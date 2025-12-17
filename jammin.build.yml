@@ -5,7 +5,7 @@ services:
 
   - path: services/example-jambrains
     name: jambrains
-    sdk: jambrains
+    sdk: jambrains-1cfc41c
 
   - path: services/example-jamsdk
     name: jamsdk
