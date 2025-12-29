@@ -1,10 +1,10 @@
 # jammin + All SDKs (Undecided Template)
 
-This project was created with [jammin](https://github.com/FluffyLabs/jammin), FluffyLabs' toolbox for Typeberry builders.
+This project was created with [jammin](https://github.com/FluffyLabs/jammin), FluffyLabs' toolbox for JAM service builders.
 
 ## What is jammin?
 
-jammin is a comprehensive toolkit that helps you spin up projects, build services, ship them to a network, and monitor what happens after deploy. This is the **undecided template** - a starter template that includes example services for all available SDKs, perfect for exploring your options.
+Learn more about jammin in the [official documentation](https://fluffylabs.dev/jammin/). This is the **undecided template** - a starter template that includes example services for all available SDKs, perfect for exploring your options.
 
 ## What's Included
 
@@ -16,6 +16,8 @@ This project includes example services for all three SDKs:
 Use this template to experiment with different SDKs and choose the one that best fits your needs.
 
 ## Getting Started
+
+First, install the jammin CLI tool by following the [installation guide](https://fluffylabs.dev/jammin/getting-started.html).
 
 Explore the different SDK examples:
 - Build configuration via `jammin.build.yml`
@@ -40,14 +42,6 @@ jammin test
 
 Runs unit tests for your services.
 
-### Deploy
-
-```bash
-jammin deploy
-```
-
-Deploys your services to a network.
-
 ## Project Structure
 
 ```
@@ -70,4 +64,4 @@ Deploys your services to a network.
 2. Run `jammin build` to build all services
 3. Choose the SDK that works best for you
 4. Remove the services you don't need
-5. Customize your chosen service and deploy with `jammin deploy`
+5. Customize your chosen service
