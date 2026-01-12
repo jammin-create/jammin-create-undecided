@@ -10,3 +10,7 @@ services:
   - path: services/example-jamsdk
     name: jamsdk
     sdk: jam-sdk-0.1.26
+
+  - path: services/example-ajanta
+    name: ajanta
+    sdk: ajanta-0.1.0
