@@ -12,6 +12,7 @@ This project includes example services for all three SDKs:
 - **JAM SDK** service in `services/example-jamsdk`
 - **Jade SDK** service in `services/example-jade`
 - **JamBrains SDK** service in `services/example-jambrains`
+- **Ajanta SDK** service in `services/example-ajanta`
 
 Use this template to experiment with different SDKs and choose the one that best fits your needs.
 
@@ -48,6 +49,7 @@ Runs unit tests for your services.
 .
 ├── jammin.build.yml           # jammin configuration
 └── services/
+    ├── example-ajanta/        # Ajanta SDK service
     ├── example-jamsdk/        # JAM SDK service
     ├── example-jade/          # Jade SDK service
     └── example-jambrains/     # JamBrains SDK service
