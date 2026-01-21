@@ -57,6 +57,11 @@ Runs unit tests for your services.
 
 - [jammin on github](https://github.com/FluffyLabs/jammin)
 - [jammin on npm](https://www.npmjs.com/package/@fluffylabs/jammin)
+- [jam sdk](https://docs.rs/jam-pvm-common/latest/jam_pvm_common/index.html)
+- [jam types](https://docs.rs/jam-types/latest/jam_types/)
+- [jambrains sdk](https://github.com/JamBrains/service-sdk)
+- [jade sdk](https://github.com/spacejamapp/jade)
+- [ajanda sdk](https://github.com/Chainscore/ajanta)
 
 ## Next Steps
 
