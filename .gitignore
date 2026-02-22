@@ -4,3 +4,4 @@ target/
 .DS_Store
 logs/
 __pycache__/
+config/jammin.test.config.ts
