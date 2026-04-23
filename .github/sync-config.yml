@@ -1,0 +1,22 @@
+# Source repos that get mirrored into this template.
+# Each entry:
+#   repo: owner/name on github.com
+#   name: value used in this repo's jammin.build.yml services[].name (must be unique)
+#   dest: local directory where the source's services/example/ is mirrored
+#         (also used as services[].path in this repo's jammin.build.yml)
+sources:
+  - repo: jammin-create/jammin-create-jade
+    name: jade
+    dest: services/example-jade
+  - repo: jammin-create/jammin-create-jambrains
+    name: jambrains
+    dest: services/example-jambrains
+  - repo: jammin-create/jammin-create-jam-sdk
+    name: jamsdk
+    dest: services/example-jamsdk
+  - repo: jammin-create/jammin-create-ajanta
+    name: ajanta
+    dest: services/example-ajanta
+  - repo: jammin-create/jammin-create-jamc3
+    name: jamc3
+    dest: services/example-jamc3
