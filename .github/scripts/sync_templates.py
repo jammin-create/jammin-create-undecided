@@ -15,11 +15,10 @@ from __future__ import annotations
 
 import argparse
 import json
-import shutil
 import subprocess
 import sys
 import tempfile
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 
 from ruamel.yaml import YAML
@@ -165,7 +164,6 @@ def sync_source(entry: SourceEntry, repo_root: Path) -> SourceResult:
             clone_source(entry.repo, src_root)
             sdk = read_source_sdk(src_root)
             dest_dir = repo_root / entry.dest
-            dest_existed = dest_dir.is_dir()
             files_changed = mirror_service(src_root / "services" / "example", dest_dir)
             yml_changed, previous_sdk = update_build_yml(
                 repo_root / "jammin.build.yml", entry.name, entry.dest, sdk
@@ -173,7 +171,8 @@ def sync_source(entry: SourceEntry, repo_root: Path) -> SourceResult:
         result.files_changed = files_changed
         result.sdk_before = previous_sdk
         result.sdk_after = sdk
-        if previous_sdk is None and not dest_existed:
+        if previous_sdk is None:
+            # No entry in jammin.build.yml yet -> this is a brand-new service.
             result.status = "added"
         elif files_changed == 0 and not yml_changed:
             result.status = "unchanged"
