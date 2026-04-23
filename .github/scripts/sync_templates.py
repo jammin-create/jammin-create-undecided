@@ -156,6 +156,39 @@ def update_build_yml(build_path: Path, name: str, dest: str, sdk: str) -> tuple[
     return changed, previous_sdk
 
 
+def sync_source(entry: SourceEntry, repo_root: Path) -> SourceResult:
+    """Sync a single source repo into this repo. Never raises; errors go into the result."""
+    result = SourceResult(name=entry.name, status="failed")
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            src_root = Path(tmp) / "src"
+            clone_source(entry.repo, src_root)
+            sdk = read_source_sdk(src_root)
+            dest_dir = repo_root / entry.dest
+            dest_existed = dest_dir.is_dir()
+            files_changed = mirror_service(src_root / "services" / "example", dest_dir)
+            yml_changed, previous_sdk = update_build_yml(
+                repo_root / "jammin.build.yml", entry.name, entry.dest, sdk
+            )
+        result.files_changed = files_changed
+        result.sdk_before = previous_sdk
+        result.sdk_after = sdk
+        if previous_sdk is None and not dest_existed:
+            result.status = "added"
+        elif files_changed == 0 and not yml_changed:
+            result.status = "unchanged"
+        else:
+            result.status = "updated"
+        return result
+    except subprocess.CalledProcessError as e:
+        stderr = (e.stderr or b"").decode("utf-8", errors="replace") if isinstance(e.stderr, bytes) else (e.stderr or "")
+        result.error = f"{e.cmd[0]} failed (exit {e.returncode}): {stderr.strip()[:500]}"
+        return result
+    except Exception as e:
+        result.error = f"{type(e).__name__}: {e}"
+        return result
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -184,8 +217,15 @@ def main() -> int:
         print(f"ERROR loading config: {e}", file=sys.stderr)
         return 2
 
-    # Per-source sync will be added in Task 6.
     results: list[SourceResult] = []
+    for entry in entries:
+        print(f"syncing {entry.repo} -> {entry.dest}", file=sys.stderr)
+        r = sync_source(entry, args.repo_root)
+        results.append(r)
+        if r.status == "failed":
+            print(f"  failed: {r.error}", file=sys.stderr)
+        else:
+            print(f"  {r.status} (files_changed={r.files_changed}, sdk={r.sdk_before}->{r.sdk_after})", file=sys.stderr)
 
     summary = {
         "results": [r.__dict__ for r in results],
@@ -194,6 +234,9 @@ def main() -> int:
     sys.stdout.write("\n")
     if args.summary_out:
         args.summary_out.write_text(json.dumps(summary, indent=2) + "\n")
+
+    if results and all(r.status == "failed" for r in results):
+        return 1
     return 0
 
 
