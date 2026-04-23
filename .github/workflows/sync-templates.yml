@@ -1,0 +1,55 @@
+name: Sync templates from source repos
+
+on:
+  schedule:
+    - cron: "0 6 * * *"  # daily, 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mint GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install ruamel.yaml
+
+      - name: Run sync
+        run: |
+          python .github/scripts/sync_templates.py \
+            --summary-out /tmp/sync-summary.json
+
+      - name: Render PR body
+        run: |
+          python .github/scripts/format_pr_body.py /tmp/sync-summary.json > /tmp/pr-body.md
+          cat /tmp/pr-body.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Create or update PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          branch: sync/templates
+          base: main
+          title: "chore: sync templates from source repos"
+          body-path: /tmp/pr-body.md
+          commit-message: "chore: sync templates from source repos"
+          labels: automated-sync
+          delete-branch: true

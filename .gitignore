@@ -5,3 +5,4 @@ target/
 logs/
 __pycache__/
 config/jammin.test.config.ts
+/docs/

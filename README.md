@@ -72,3 +72,22 @@ Runs unit tests for your services.
 3. Choose the SDK that works best for you
 4. Remove the services you don't need
 5. Customize your chosen service
+
+## Template auto-sync
+
+Service directories under `services/example-*` and their SDK pins in
+`jammin.build.yml` are kept in sync with the per-SDK source repos in the
+`jammin-create` GitHub organization by the workflow at
+`.github/workflows/sync-templates.yml`.
+
+The workflow runs daily and can be triggered manually from the Actions
+tab. It opens a PR on the branch `sync/templates` whenever a source repo
+has drifted.
+
+To set it up on a fork, configure two repo secrets from a GitHub App
+installed on this repo with `contents: write` and `pull-requests: write`:
+
+- `APP_ID` — the App's numeric ID
+- `APP_PRIVATE_KEY` — the App's PEM private key
+
+The list of sources is in `.github/sync-config.yml`.
