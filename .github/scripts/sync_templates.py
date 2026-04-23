@@ -119,6 +119,43 @@ def mirror_service(source_dir: Path, dest_dir: Path) -> int:
     return changes
 
 
+def update_build_yml(build_path: Path, name: str, dest: str, sdk: str) -> tuple[bool, str | None]:
+    """Update (or append) a service entry in this repo's jammin.build.yml.
+
+    Returns (changed, previous_sdk):
+      - changed: True if the file content was modified.
+      - previous_sdk: the prior sdk pin if the entry already existed, else None.
+    """
+    with build_path.open() as f:
+        data = yaml.load(f)
+    if not isinstance(data, dict) or "services" not in data or not isinstance(data["services"], list):
+        raise ValueError(f"{build_path}: missing or malformed 'services' list")
+
+    existing = None
+    for entry in data["services"]:
+        if isinstance(entry, dict) and entry.get("name") == name:
+            existing = entry
+            break
+
+    if existing is None:
+        data["services"].append({"path": dest, "name": name, "sdk": sdk})
+        previous_sdk = None
+        changed = True
+    else:
+        previous_sdk = str(existing.get("sdk")) if existing.get("sdk") is not None else None
+        if previous_sdk == sdk:
+            changed = False
+        else:
+            existing["sdk"] = sdk
+            changed = True
+
+    if changed:
+        with build_path.open("w") as f:
+            yaml.dump(data, f)
+
+    return changed, previous_sdk
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
