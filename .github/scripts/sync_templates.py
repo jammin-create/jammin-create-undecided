@@ -61,6 +61,32 @@ def load_config(path: Path) -> list[SourceEntry]:
     return entries
 
 
+def clone_source(repo: str, dst: Path) -> None:
+    """Shallow-clone a public GitHub repo at main into `dst`."""
+    url = f"https://github.com/{repo}.git"
+    subprocess.run(
+        ["git", "clone", "--depth", "1", "--branch", "main", url, str(dst)],
+        check=True,
+        capture_output=True,
+    )
+
+
+def read_source_sdk(source_root: Path) -> str:
+    """Extract the single service's sdk pin from a source repo's jammin.build.yml."""
+    build_path = source_root / "jammin.build.yml"
+    if not build_path.exists():
+        raise FileNotFoundError("source repo missing jammin.build.yml")
+    with build_path.open() as f:
+        data = yaml.load(f)
+    services = data.get("services") or []
+    if not services:
+        raise ValueError("source jammin.build.yml has no services")
+    sdk = services[0].get("sdk")
+    if not sdk:
+        raise ValueError("source jammin.build.yml services[0] has no sdk")
+    return str(sdk)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
