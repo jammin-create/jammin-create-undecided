@@ -87,6 +87,38 @@ def read_source_sdk(source_root: Path) -> str:
     return str(sdk)
 
 
+def mirror_service(source_dir: Path, dest_dir: Path) -> int:
+    """Mirror source_dir -> dest_dir (delete files removed upstream).
+
+    Returns the number of files that differ post-sync vs pre-sync,
+    determined by counting rsync's itemized changes.
+    """
+    if not source_dir.is_dir():
+        raise FileNotFoundError(f"source directory missing: {source_dir}")
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    # Trailing slashes matter to rsync: copy contents, not the dir itself.
+    result = subprocess.run(
+        [
+            "rsync",
+            "-a",
+            "--delete",
+            "--itemize-changes",
+            f"{source_dir}/",
+            f"{dest_dir}/",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    # Each itemized line that starts with '>' (file received) or '*deleting'
+    # counts as a change. Directory-only entries start with 'c' and we skip them.
+    changes = 0
+    for line in result.stdout.splitlines():
+        if line.startswith(">") or line.startswith("*deleting"):
+            changes += 1
+    return changes
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
