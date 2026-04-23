@@ -14,3 +14,6 @@ services:
   - path: services/example-ajanta
     name: ajanta
     sdk: ajanta-0.1.0
+  - path: services/example-jamc3
+    name: jamc3
+    sdk: jamc3-1.1.2
