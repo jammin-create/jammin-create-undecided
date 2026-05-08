@@ -20,3 +20,6 @@ sources:
   - repo: jammin-create/jammin-create-jamc3
     name: jamc3
     dest: services/example-jamc3
+  - repo: jammin-create/jammin-create-aslan
+    name: aslan
+    dest: services/example-aslan
