@@ -1,18 +1,19 @@
 module my_service;
 
 import jam::types;
-import jam::service;
+import jam::refine;
+import jam::accumulate;
 import jam::log;
 
-fn void refine(types::RefineArgs* args) @export("refine")
+fn types::RefineResult refine(refine::Ctx* ctx) @export("refine")
 {
   log::info("svc", "Hello from refine!");
 
-  char[5] result = { 'h', 'e', 'l', 'l', 'o' };
-  service::return_to_host(&result, 5);
+  static char[5] result = { 'h', 'e', 'l', 'l', 'o' };
+  return ctx.result_ok(&result, 5);
 }
 
-fn void accumulate(types::AccumulateArgs* args) @export("accumulate")
+fn void accumulate(accumulate::Ctx* ctx) @export("accumulate")
 {
   log::info("svc", "Hello from accumulate!");
 }
