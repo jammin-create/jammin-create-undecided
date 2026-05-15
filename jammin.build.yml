@@ -16,12 +16,7 @@ services:
     sdk: ajanta-0.1.0
   - path: services/example-jamc3
     name: jamc3
-    # Inline SDK config until FluffyLabs/jammin#123 ships in a release.
-    # Once available, replace with: sdk: jamc3-<new>
-    sdk:
-      image: ghcr.io/dreverr/jamc3:2.0.2
-      build: main.c3 -o service.jam
-      test: "--help"
+    sdk: jamc3-2.0.2
   - path: services/example-aslan
     name: aslan
     sdk: aslan-0.0.6
