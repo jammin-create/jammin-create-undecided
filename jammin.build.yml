@@ -1,7 +1,7 @@
 services:
   - path: services/example-jade
     name: jade
-    sdk: jade-0.0.15-pre.1
+    sdk: jade@0.0.15-pre.1
 
   - path: services/example-jambrains
     name: jambrains
@@ -9,14 +9,14 @@ services:
 
   - path: services/example-jamsdk
     name: jamsdk
-    sdk: jam-sdk-0.1.26
+    sdk: jam-sdk@0.1.26
 
   - path: services/example-ajanta
     name: ajanta
-    sdk: ajanta-0.1.0
+    sdk: ajanta@0.1.0
   - path: services/example-jamc3
     name: jamc3
-    sdk: jamc3-2.0.2
+    sdk: jamc3@2.0.2
   - path: services/example-aslan
     name: aslan
-    sdk: aslan-0.0.6
+    sdk: aslan@0.0.6
