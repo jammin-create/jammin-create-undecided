@@ -1,0 +1,19 @@
+{
+  "name": "example",
+  "version": "0.0.1",
+  "description": "JAM service built with the as-lan AssemblyScript SDK",
+  "type": "module",
+  "scripts": {
+    "asbuild:release": "asc assembly/index.ts --target release --runtime=stub",
+    "asbuild:test": "asc assembly/test-run.ts --target test",
+    "pvm": "wasm-pvm compile build/release.wasm -o example.jam --adapter node_modules/@fluffylabs/as-lan/pvm-adapter.wat",
+    "build": "npm run asbuild:release && npm run pvm",
+    "test": "npm run asbuild:test && node ./bin/test.js"
+  },
+  "license": "MPL-2.0",
+  "devDependencies": {
+    "@fluffylabs/as-lan": "0.0.1",
+    "assemblyscript": "^0.28.15",
+    "ecalli": "npm:@fluffylabs/as-lan-ecalli-mocks@0.0.1"
+  }
+}

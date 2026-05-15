@@ -1,0 +1,24 @@
+{
+  "entries": ["assembly/index.ts"],
+  "targets": {
+    "release": {
+      "outFile": "build/release.wasm",
+      "textFile": "build/release.wat",
+      "sourceMap": true,
+      "optimizeLevel": 3,
+      "shrinkLevel": 2,
+      "converge": true,
+      "noAssert": true
+    },
+    "test": {
+      "outFile": "build/test.wasm",
+      "textFile": "build/test.wat",
+      "sourceMap": true,
+      "debug": true
+    }
+  },
+  "options": {
+    "bindings": "esm",
+    "maximumMemory": 16
+  }
+}
