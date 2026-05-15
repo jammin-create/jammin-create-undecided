@@ -8,11 +8,13 @@ Learn more about jammin in the [official documentation](https://fluffylabs.dev/j
 
 ## What's Included
 
-This project includes example services for all three SDKs:
+This project includes example services for all available SDKs:
 - **JAM SDK** service in `services/example-jamsdk`
 - **Jade SDK** service in `services/example-jade`
 - **JamBrains SDK** service in `services/example-jambrains`
 - **Ajanta SDK** service in `services/example-ajanta`
+- **JAMC3 SDK** service in `services/example-jamc3`
+- **as-lan SDK** service in `services/example-aslan`
 
 Use this template to experiment with different SDKs and choose the one that best fits your needs.
 
@@ -50,9 +52,11 @@ Runs unit tests for your services.
 ├── jammin.build.yml           # jammin configuration
 └── services/
     ├── example-ajanta/        # Ajanta SDK service
-    ├── example-jamsdk/        # JAM SDK service
+    ├── example-aslan/         # as-lan (AssemblyScript) SDK service
     ├── example-jade/          # Jade SDK service
-    └── example-jambrains/     # JamBrains SDK service
+    ├── example-jambrains/     # JamBrains SDK service
+    ├── example-jamc3/         # JAMC3 (C3) SDK service
+    └── example-jamsdk/        # JAM SDK service
 ```
 
 ## Learn More
@@ -63,7 +67,9 @@ Runs unit tests for your services.
 - [jam types](https://docs.rs/jam-types/latest/jam_types/)
 - [jambrains sdk](https://github.com/JamBrains/service-sdk)
 - [jade sdk](https://github.com/spacejamapp/jade)
-- [ajanda sdk](https://github.com/Chainscore/ajanta)
+- [ajanta sdk](https://github.com/Chainscore/ajanta)
+- [jamc3 sdk](https://github.com/DrEverr/jamc3.c3l)
+- [as-lan sdk](https://github.com/tomusdrw/as-lan)
 
 ## Next Steps
 
