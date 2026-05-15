@@ -69,7 +69,7 @@ Runs unit tests for your services.
 - [jade sdk](https://github.com/spacejamapp/jade)
 - [ajanta sdk](https://github.com/Chainscore/ajanta)
 - [jamc3 sdk](https://github.com/DrEverr/jamc3.c3l)
-- [as-lan sdk](https://www.npmjs.com/package/@fluffylabs/as-lan)
+- [as-lan sdk](https://github.com/tomusdrw/as-lan)
 
 ## Next Steps
 
