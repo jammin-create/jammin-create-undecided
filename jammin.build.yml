@@ -17,3 +17,8 @@ services:
   - path: services/example-jamc3
     name: jamc3
     sdk: jamc3-1.1.2
+  - path: services/example-aslan
+    name: aslan
+    sdk: "{'image': 'ghcr.io/tomusdrw/jammin-as-lan:0.0.3', 'build': 'sh -c \"npm
+      install --no-audit --no-fund && npm run build\"', 'test': 'sh -c \"npm install
+      --no-audit --no-fund && npm test\"'}"
